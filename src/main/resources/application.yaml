@@ -1,3 +1,5 @@
+apiLineUrl: https://api.open-meteo.com/v1/forecast?
+
 server:
   port: 9090
 spring:
@@ -21,6 +23,6 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 api-url: "https://api.telegram.org/"
-webhook-path: "https://7ef8-92-124-163-11.eu.ngrok.io"
+webhook-path: "https://42ed-92-124-163-11.eu.ngrok.io"
 bot-name: "Local22WeatherBot"
 bot-token: ""

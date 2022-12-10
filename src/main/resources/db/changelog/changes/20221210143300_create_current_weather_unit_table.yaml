@@ -1,0 +1,51 @@
+atabaseChangeLog:
+  - preConditions:
+      - runningAs:
+          username: postgres
+
+  - changeSet:
+      id: 1
+      author: vlpetko
+      changes:
+        - createTable:
+            tableName: weather_units
+            columns:
+              - column:
+                  name: unit_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: latitude
+                  type: float
+              - column:
+                  name: longitude
+                  type: float
+        - createTable:
+            tableName: current_weather
+            columns:
+              - column:
+                  name: current_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    - primaryKey: true
+              - column:
+                  name: temperature
+                  type: float
+              - column:
+                  name: windspeed
+                  type: float
+              - column:
+                  name: winddirection
+                  type: float
+              - column:
+                  name: reqwestDate
+                  type: timestamp without time zone
+              - column:
+                  name: unit_id
+                  type: bigint
+                  constraints:
+                    references: weather_units(unit_id)
+                    foreignKeyName: fk_current_weather_unit
