@@ -1,4 +1,4 @@
-atabaseChangeLog:
+databaseChangeLog:
   - preConditions:
       - runningAs:
           username: postgres

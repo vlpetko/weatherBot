@@ -22,13 +22,4 @@ public class CurrentWeatherDto {
     @JsonProperty("time")
     private LocalDateTime localDateTime;
 
-    @Override
-    public String toString() {
-        return "CurrentWeatherDto{"
-                + "temperature=" + temperature
-                + ", windspeed=" + windspeed
-                + ", winddirection=" + winddirection
-                + ", localDateTime=" + localDateTime
-                + '}';
-    }
 }
