@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "weatherunit")
+@Table(name = "weather_units")
 public class CurrentWeatherUnit {
 
     @Id

@@ -12,6 +12,7 @@ import ru.vlpetko.weatherbot.model.CurrentWeatherUnit;
 import ru.vlpetko.weatherbot.repository.CurrentWeatherUnitRepository;
 import ru.vlpetko.weatherbot.service.client.dto.CurrentWeatherUnitDto;
 
+import javax.transaction.Transactional;
 import java.util.Objects;
 
 @Service
@@ -26,13 +27,14 @@ public class OpenMeteoApiClient {
 
     private final CurrentWeatherUnitRepository currentWeatherUnitRepository;
 
+    @Transactional
     public CurrentWeather getAndSaveData(){
         CurrentWeatherUnit currentWeatherUnit = getDataFromOpenSource();
         currentWeatherUnitRepository.save(currentWeatherUnit);
         return currentWeatherUnit.getCurrentWeather();
     }
 
-    public CurrentWeatherUnit getDataFromOpenSource(){
+    private CurrentWeatherUnit getDataFromOpenSource(){
         String coordinate = "latitude=54.99&longitude=73.37";
         String current = "&current_weather=true";
         CurrentWeatherUnitDto resultJson;

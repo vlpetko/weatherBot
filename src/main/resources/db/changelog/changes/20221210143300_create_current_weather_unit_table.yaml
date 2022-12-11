@@ -41,7 +41,7 @@ databaseChangeLog:
                   name: winddirection
                   type: float
               - column:
-                  name: reqwestDate
+                  name: reqwest_date
                   type: timestamp without time zone
               - column:
                   name: unit_id
