@@ -15,14 +15,6 @@ public class CurrentWeatherUnitDto {
     private float longitude;
 
     @JsonProperty("current_weather")
-    private CurrentWeatherDto currentWeatherDto;
+    private CurrentWeatherDto currentWeather;
 
-    @Override
-    public String toString() {
-        return "CurrentWeatherUnitDto{"
-                + "latitude=" + latitude
-                + ", longitude=" + longitude
-                + ", currentWeatherDto=" + currentWeatherDto
-                + '}';
-    }
 }
