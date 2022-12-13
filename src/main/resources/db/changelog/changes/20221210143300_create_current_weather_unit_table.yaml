@@ -35,13 +35,13 @@ databaseChangeLog:
                   name: temperature
                   type: float
               - column:
-                  name: windspeed
+                  name: wind_speed
                   type: float
               - column:
-                  name: winddirection
+                  name: wind_direction
                   type: float
               - column:
-                  name: reqwest_date
+                  name: request_date
                   type: timestamp without time zone
               - column:
                   name: unit_id

@@ -56,7 +56,7 @@ public class OpenMeteoApiClient {
                 CurrentWeather currentWeather = unit.getCurrentWeather();
                 currentWeather.setCurrentWeatherUnit(unit);
                 unit.setCurrentWeather(currentWeather);
-                result.setCurrentWeather(currentWeather);
+                result = unit;
         }
         return result;
     }

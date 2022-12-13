@@ -11,9 +11,9 @@ public class CurrentReportDto {
 
     private float temperature;
 
-    private float windspeed;
+    private float windSpeed;
 
-    private float winddirection;
+    private float windDirection;
 
-    private LocalDateTime reqwestDate;
+    private LocalDateTime requestDate;
 }

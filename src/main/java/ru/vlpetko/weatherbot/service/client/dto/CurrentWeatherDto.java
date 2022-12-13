@@ -14,12 +14,12 @@ public class CurrentWeatherDto {
     private float temperature;
 
     @JsonProperty("windspeed")
-    private float windspeed;
+    private float windSpeed;
 
     @JsonProperty("winddirection")
-    private float winddirection;
+    private float windDirection;
 
     @JsonProperty("time")
-    private LocalDateTime localDateTime;
+    private LocalDateTime requestDate;
 
 }

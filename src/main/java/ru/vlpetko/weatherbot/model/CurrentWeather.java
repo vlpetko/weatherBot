@@ -20,11 +20,11 @@ public class CurrentWeather {
 
     private float temperature;
 
-    private float windspeed;
+    private float windSpeed;
 
-    private float winddirection;
+    private float windDirection;
 
-    private LocalDateTime reqwestDate;
+    private LocalDateTime requestDate;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "unit_id")
@@ -35,9 +35,9 @@ public class CurrentWeather {
         return "CurrentWeather{" +
                 "currentId=" + currentId +
                 ", temperature=" + temperature +
-                ", windspeed=" + windspeed +
-                ", winddirection=" + winddirection +
-                ", localDateTime=" + reqwestDate +
+                ", windspeed=" + windSpeed +
+                ", winddirection=" + windDirection +
+                ", localDateTime=" + requestDate +
                 ", currentWeatherUnit=" + currentWeatherUnit
                 + '}';
     }

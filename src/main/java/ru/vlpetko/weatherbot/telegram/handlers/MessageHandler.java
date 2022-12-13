@@ -1,5 +1,6 @@
 package ru.vlpetko.weatherbot.telegram.handlers;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,8 @@ import ru.vlpetko.weatherbot.telegram.TelegramApiClient;
 import ru.vlpetko.weatherbot.telegram.buttons.ReplyKeyboardMaker;
 
 import java.io.IOException;
+
+import static ru.vlpetko.weatherbot.utils.WeatherUtils.convertCurrentWeatherToString;
 
 @Component
 @RequiredArgsConstructor
@@ -51,7 +54,7 @@ public class MessageHandler {
 
     private SendMessage getDataMessage(String chatId) {
         CurrentWeather currentWeather = openMeteoApiClient.getAndSaveData();
-        SendMessage sendMessage = new SendMessage(chatId, currentWeather.toString());
+        SendMessage sendMessage = new SendMessage(chatId, convertCurrentWeatherToString(currentWeather));
         return sendMessage;
     }
 }
