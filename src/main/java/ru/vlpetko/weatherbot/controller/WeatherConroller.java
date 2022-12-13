@@ -19,4 +19,8 @@ public class WeatherConroller {
     public CurrentReportDto getCurrentReportDto(){
         return CurrentWeatherMapper.INSTANCE.mapToCurrentReportDto(openMeteoApiClient.getAndSaveData());
     }
+    @GetMapping("/forecast")
+    public CurrentReportDto getForecastReportDto(){
+        return CurrentWeatherMapper.INSTANCE.mapToCurrentReportDto(openMeteoApiClient.getAndSaveForecast());
+    }
 }

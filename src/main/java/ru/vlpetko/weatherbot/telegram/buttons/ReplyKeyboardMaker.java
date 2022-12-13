@@ -15,11 +15,11 @@ public class ReplyKeyboardMaker {
     public ReplyKeyboardMarkup getMainMenuKeyboard() {
         KeyboardRow row1 = new KeyboardRow();
 
+        row1.add(new KeyboardButton(ButtonNameEnum.GET_LOCATION_BUTTON.getButtonName()));
         row1.add(new KeyboardButton(ButtonNameEnum.GET_CURRENT_WEATHER_BUTTON.getButtonName()));
-        row1.add(new KeyboardButton(ButtonNameEnum.GET_FORECAST_BUTTON.getButtonName()));
 
         KeyboardRow row2 = new KeyboardRow();
-        row2.add(new KeyboardButton(ButtonNameEnum.GET_REPORT_BUTTON.getButtonName()));
+        row2.add(new KeyboardButton(ButtonNameEnum.GET_FORECAST_BUTTON.getButtonName()));
         row2.add(new KeyboardButton(ButtonNameEnum.HELP_BUTTON.getButtonName()));
 
         List<KeyboardRow> keyboard = new ArrayList<>();

@@ -29,14 +29,20 @@ public class OpenMeteoApiClient {
 
     @Transactional
     public CurrentWeather getAndSaveData(){
-        CurrentWeatherUnit currentWeatherUnit = getDataFromOpenSource();
+        CurrentWeatherUnit currentWeatherUnit = getDataFromOpenSource("&current_weather=true");
         currentWeatherUnitRepository.save(currentWeatherUnit);
         return currentWeatherUnit.getCurrentWeather();
     }
 
-    private CurrentWeatherUnit getDataFromOpenSource(){
+    @Transactional
+    public CurrentWeather getAndSaveForecast(){
+        CurrentWeatherUnit currentWeatherUnit = getForecastFromOpenSource("&hourly=temperature_2m");
+        currentWeatherUnitRepository.save(currentWeatherUnit);
+        return currentWeatherUnit.getCurrentWeather();
+    }
+
+    private CurrentWeatherUnit getDataFromOpenSource(String request){
         String coordinate = "latitude=54.99&longitude=73.37";
-        String current = "&current_weather=true";
         CurrentWeatherUnitDto resultJson;
         CurrentWeatherUnit result = new CurrentWeatherUnit();
 
@@ -44,7 +50,7 @@ public class OpenMeteoApiClient {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         ResponseEntity<CurrentWeatherUnitDto> responseEntity =
-                restTemplate.exchange(apiLineUrl + coordinate + current, HttpMethod.GET, entity,
+                restTemplate.exchange(apiLineUrl + coordinate + request, HttpMethod.GET, entity,
                         CurrentWeatherUnitDto.class);
 
         log.info("server status: " + responseEntity.getStatusCode());
@@ -57,6 +63,32 @@ public class OpenMeteoApiClient {
                 currentWeather.setCurrentWeatherUnit(unit);
                 unit.setCurrentWeather(currentWeather);
                 result = unit;
+        }
+        return result;
+    }
+
+    private CurrentWeatherUnit getForecastFromOpenSource(String request){
+        String coordinate = "latitude=54.99&longitude=73.37";
+        CurrentWeatherUnitDto resultJson;
+        CurrentWeatherUnit result = new CurrentWeatherUnit();
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<CurrentWeatherUnitDto> responseEntity =
+                restTemplate.exchange(apiLineUrl + coordinate + request, HttpMethod.GET, entity,
+                        CurrentWeatherUnitDto.class);
+
+        log.info("server status: " + responseEntity.getStatusCode());
+        if (responseEntity.getStatusCode() == HttpStatus.valueOf(200)) {
+
+            resultJson = (Objects.requireNonNull(responseEntity.getBody()));
+
+            CurrentWeatherUnit unit = CurrentWeatherUnitMapper.INSTANCE.mapToCurrentWetherUnit(resultJson);
+            CurrentWeather currentWeather = unit.getCurrentWeather();
+            currentWeather.setCurrentWeatherUnit(unit);
+            unit.setCurrentWeather(currentWeather);
+            result = unit;
         }
         return result;
     }

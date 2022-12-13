@@ -6,7 +6,7 @@ public enum ButtonNameEnum {
 
     GET_FORECAST_BUTTON("Прогноз погоды"),
 
-    GET_REPORT_BUTTON("Статистика запросов"),
+    GET_LOCATION_BUTTON("Статистика запросов"),
 
     HELP_BUTTON("Помощь");
 
