@@ -31,6 +31,9 @@ public class MessageHandler {
         String chatId = message.getChatId().toString();
         log.info("ChatId is: {}", chatId);
 
+        Double Latitude = message.getLocation().getLatitude();
+        Double Longitude = message.getLocation().getLongitude();
+
         String inputText = message.getText();
 
         if (inputText == null) {
