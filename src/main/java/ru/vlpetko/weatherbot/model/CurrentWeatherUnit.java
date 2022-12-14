@@ -17,9 +17,9 @@ public class CurrentWeatherUnit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long unitId;
 
-    private float latitude;
+    private double latitude;
 
-    private float longitude;
+    private double longitude;
 
     @OneToOne(mappedBy = "currentWeatherUnit", cascade = CascadeType.ALL)
     private CurrentWeather currentWeather;

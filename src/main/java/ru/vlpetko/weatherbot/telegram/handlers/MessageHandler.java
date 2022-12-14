@@ -31,13 +31,15 @@ public class MessageHandler {
         String chatId = message.getChatId().toString();
         log.info("ChatId is: {}", chatId);
 
-        Double Latitude = message.getLocation().getLatitude();
-        Double Longitude = message.getLocation().getLongitude();
-
         String inputText = message.getText();
 
         if (inputText == null) {
-            throw new IllegalArgumentException();
+            if (message.getLocation() == null) {
+                throw new IllegalArgumentException();
+            } else {
+                log.info("Location is: {} {}", message.getLocation().getLatitude(), message.getLocation().getLongitude());
+                return getLocationMessage(chatId, message.getLocation().getLatitude(),message.getLocation().getLongitude());
+            }
         } else if (inputText.equals("/start")) {
             return getStartMessage(chatId);
         } else if (inputText.equals(ButtonNameEnum.GET_CURRENT_WEATHER_BUTTON.getButtonName())) {
@@ -57,6 +59,12 @@ public class MessageHandler {
 
     private SendMessage getDataMessage(String chatId) {
         CurrentWeather currentWeather = openMeteoApiClient.getAndSaveData();
+        SendMessage sendMessage = new SendMessage(chatId, convertCurrentWeatherToString(currentWeather));
+        return sendMessage;
+    }
+    private SendMessage getLocationMessage(String chatId, double latitude, double longitude) {
+        CurrentWeather currentWeather = openMeteoApiClient.getAndSaveLocationData("latitude="
+                + latitude + "&longitude=" + longitude);
         SendMessage sendMessage = new SendMessage(chatId, convertCurrentWeatherToString(currentWeather));
         return sendMessage;
     }

@@ -9,10 +9,10 @@ import lombok.Data;
 public class CurrentWeatherUnitDto {
 
     @JsonProperty("latitude")
-    private float latitude;
+    private double latitude;
 
     @JsonProperty("longitude")
-    private float longitude;
+    private double longitude;
 
     @JsonProperty("current_weather")
     private CurrentWeatherDto currentWeather;

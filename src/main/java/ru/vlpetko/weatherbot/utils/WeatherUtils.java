@@ -7,6 +7,7 @@ import ru.vlpetko.weatherbot.model.CurrentWeather;
 public class WeatherUtils {
 
     public static String convertCurrentWeatherToString(CurrentWeather currentWeather){
-        return "asd";
+        return "Текущая температура: " + currentWeather.getTemperature() + " Скорость ветра: "
+                + currentWeather.getWindSpeed();
     }
 }

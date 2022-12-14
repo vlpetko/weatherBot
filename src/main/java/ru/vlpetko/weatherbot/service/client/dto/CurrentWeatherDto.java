@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 public class CurrentWeatherDto {
 
     @JsonProperty("temperature")
-    private float temperature;
+    private double temperature;
 
     @JsonProperty("windspeed")
-    private float windSpeed;
+    private double windSpeed;
 
     @JsonProperty("winddirection")
-    private float windDirection;
+    private double windDirection;
 
     @JsonProperty("time")
     private LocalDateTime requestDate;
