@@ -9,11 +9,11 @@ public class CurrentReportDto {
 
     private Long currentId;
 
-    private float temperature;
+    private double temperature;
 
-    private float windSpeed;
+    private double windSpeed;
 
-    private float windDirection;
+    private double windDirection;
 
     private LocalDateTime requestDate;
 }

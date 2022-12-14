@@ -18,10 +18,10 @@ databaseChangeLog:
                     primaryKey: true
               - column:
                   name: latitude
-                  type: float
+                  type: double
               - column:
                   name: longitude
-                  type: float
+                  type: double
         - createTable:
             tableName: current_weather
             columns:
@@ -33,13 +33,13 @@ databaseChangeLog:
                     - primaryKey: true
               - column:
                   name: temperature
-                  type: float
+                  type: double
               - column:
                   name: wind_speed
-                  type: float
+                  type: double
               - column:
                   name: wind_direction
-                  type: float
+                  type: double
               - column:
                   name: request_date
                   type: timestamp without time zone
