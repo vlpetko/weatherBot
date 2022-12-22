@@ -1,0 +1,105 @@
+databaseChangeLog:
+  - preConditions:
+      - runningAs:
+          username: postgres
+
+  - changeSet:
+      id: 1
+      author: vlpetko
+      changes:
+        - createTable:
+            tableName: client
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: bigint
+              - column:
+                  name: first_name
+                  type: varchar(50)
+              - column:
+                  name: last_name
+                  type: varchar(50)
+              - column:
+                  name: registrate_date
+                  type: timestamp without time zone
+        - createTable:
+            tableName: weather_query
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: date
+                  type: timestamp without time zone
+              - column:
+                  name: client_id
+                  type: bigint
+                  constraints:
+                    references: client(id)
+                    foreignKeyName: fk_client
+        - createTable:
+            tableName: location
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: latitude
+                  type: double
+              - column:
+                  name: longitude
+                  type: double
+              - column:
+                  name: position
+                  type: varchar(50)
+              - column:
+                  name: weather_query_id
+                  type: bigint
+                  constraints:
+                    references: weather_query(id)
+                    foreignKeyName: fk_weather_query
+        - createTable:
+            tableName: weather_data
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: current_temp
+                  type: double
+              - column:
+                  name: max_temp
+                  type: double
+              - column:
+                  name: min_temp
+                  type: double
+              - column:
+                  name: wind_speed
+                  type: double
+              - column:
+                  name: wind_direction
+                  type: double
+              - column:
+                  name: calendar_date
+                  type: timestamp without time zone
+              - column:
+                  name: weather_query_id
+                  type: bigint
+                  constraints:
+                    references: weather_query(id)
+                    foreignKeyName: fk_weather_query

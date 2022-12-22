@@ -1,5 +1,3 @@
-apiLineUrl: https://api.open-meteo.com/v1/forecast?
-
 server:
   port: 9090
 spring:
@@ -26,3 +24,5 @@ api-url: "https://api.telegram.org/"
 webhook-path: "https://36e2-92-124-163-11.eu.ngrok.io"
 bot-name: "Local22WeatherBot"
 bot-token: "5904869702:AAHHYUDLy2xE_-Hh83J3NYuXLRBa5c-Lei8"
+apiLineUrl: "https://api.open-meteo.com/v1/forecast?"
+request: "&daily=temperature_2m_max,temperature_2m_min,windspeed_10m_max,winddirection_10m_dominant&current_weather=true&timezone="
