@@ -1,6 +1,5 @@
 package ru.vlpetko.weatherbot.telegram.handlers;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -9,12 +8,15 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import ru.vlpetko.weatherbot.constants.BotMessageEnum;
 import ru.vlpetko.weatherbot.constants.ButtonNameEnum;
+import ru.vlpetko.weatherbot.model.Client;
 import ru.vlpetko.weatherbot.model.CurrentWeather;
+import ru.vlpetko.weatherbot.model.WeatherData;
+import ru.vlpetko.weatherbot.service.ClientService;
 import ru.vlpetko.weatherbot.service.OpenMeteoApiClient;
-import ru.vlpetko.weatherbot.telegram.TelegramApiClient;
 import ru.vlpetko.weatherbot.telegram.buttons.ReplyKeyboardMaker;
 
 import java.io.IOException;
+import java.util.List;
 
 import static ru.vlpetko.weatherbot.utils.WeatherUtils.convertCurrentWeatherToString;
 
@@ -24,7 +26,7 @@ import static ru.vlpetko.weatherbot.utils.WeatherUtils.convertCurrentWeatherToSt
 public class MessageHandler {
 
     private final ReplyKeyboardMaker replyKeyboardMaker;
-    private final TelegramApiClient telegramApiClient;
+    private final ClientService clientService;
     private final OpenMeteoApiClient openMeteoApiClient;
 
     public BotApiMethod<?> answerMessage(Message message) throws IOException {
@@ -32,13 +34,16 @@ public class MessageHandler {
         log.info("ChatId is: {}", chatId);
 
         String inputText = message.getText();
+        Client client = clientService.chekClient(message.getFrom().getId(), message.getFrom().getFirstName(),
+                message.getFrom().getLastName(), message.getDate());
 
         if (inputText == null) {
             if (message.getLocation() == null) {
                 throw new IllegalArgumentException();
+//            } else if (inputText.equals(ButtonNameEnum.GET_LOCATION_BUTTON.getButtonName())){
+//                return getLocationMessage(chatId, message.getLocation().getLatitude(),message.getLocation().getLongitude());
             } else {
-                log.info("Location is: {} {}", message.getLocation().getLatitude(), message.getLocation().getLongitude());
-                return getLocationMessage(chatId, message.getLocation().getLatitude(),message.getLocation().getLongitude());
+                return getForecastMessage(chatId, message.getLocation().getLatitude(),message.getLocation().getLongitude(), client);
             }
         } else if (inputText.equals("/start")) {
             return getStartMessage(chatId);
@@ -66,6 +71,11 @@ public class MessageHandler {
         CurrentWeather currentWeather = openMeteoApiClient.getAndSaveLocationData("latitude="
                 + latitude + "&longitude=" + longitude);
         SendMessage sendMessage = new SendMessage(chatId, convertCurrentWeatherToString(currentWeather));
+        return sendMessage;
+    }
+    private SendMessage getForecastMessage(String chatId, double latitude, double longitude, Client client) {
+        List<WeatherData> weatherDataList = openMeteoApiClient.getAndSaveForecast(latitude, longitude,"Asia/Omsk", client);
+        SendMessage sendMessage = new SendMessage(chatId, weatherDataList.toString());
         return sendMessage;
     }
 }

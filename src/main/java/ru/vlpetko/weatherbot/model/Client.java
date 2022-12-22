@@ -1,19 +1,33 @@
 package ru.vlpetko.weatherbot.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
-@Data
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "current_weather")
+@Getter
+@Setter
+@Table(name = "client")
 public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private Long userId;
+
+    private String firstName;
+
+    private String lastName;
+
+    private LocalDateTime registrateDate;
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private List<WeatherQuery> weatherQueries;
+
 }
