@@ -12,6 +12,7 @@ import ru.vlpetko.weatherbot.model.Client;
 import ru.vlpetko.weatherbot.model.CurrentWeather;
 import ru.vlpetko.weatherbot.model.WeatherData;
 import ru.vlpetko.weatherbot.service.ClientService;
+import ru.vlpetko.weatherbot.service.GeoApifyClient;
 import ru.vlpetko.weatherbot.service.OpenMeteoApiClient;
 import ru.vlpetko.weatherbot.telegram.buttons.ReplyKeyboardMaker;
 
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static ru.vlpetko.weatherbot.utils.WeatherUtils.convertCurrentWeatherToString;
+import static ru.vlpetko.weatherbot.utils.WeatherUtils.convertForecastToString;
 
 @Component
 @RequiredArgsConstructor
@@ -28,6 +30,7 @@ public class MessageHandler {
     private final ReplyKeyboardMaker replyKeyboardMaker;
     private final ClientService clientService;
     private final OpenMeteoApiClient openMeteoApiClient;
+    private final GeoApifyClient geoApifyClient;
 
     public BotApiMethod<?> answerMessage(Message message) throws IOException {
         String chatId = message.getChatId().toString();
@@ -74,8 +77,9 @@ public class MessageHandler {
         return sendMessage;
     }
     private SendMessage getForecastMessage(String chatId, double latitude, double longitude, Client client) {
-        List<WeatherData> weatherDataList = openMeteoApiClient.getAndSaveForecast(latitude, longitude,"Asia/Omsk", client);
-        SendMessage sendMessage = new SendMessage(chatId, weatherDataList.toString());
+        List<WeatherData> weatherDataList = openMeteoApiClient.getAndSaveForecast(latitude, longitude,
+                geoApifyClient.getTimeZone(latitude, longitude), client);
+        SendMessage sendMessage = new SendMessage(chatId, convertForecastToString(weatherDataList));
         return sendMessage;
     }
 }
