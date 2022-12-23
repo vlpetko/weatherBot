@@ -6,8 +6,6 @@ public enum ButtonNameEnum {
 
     GET_FORECAST_BUTTON("Прогноз погоды"),
 
-    GET_LOCATION_BUTTON("Определить местоположение"),
-
     HELP_BUTTON("Помощь");
 
     private final String buttonName;
