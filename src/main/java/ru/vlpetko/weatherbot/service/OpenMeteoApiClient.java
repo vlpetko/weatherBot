@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import ru.vlpetko.weatherbot.mapper.CurrentWeatherUnitMapper;
-import ru.vlpetko.weatherbot.model.*;
+import ru.vlpetko.weatherbot.model.Client;
+import ru.vlpetko.weatherbot.model.Location;
+import ru.vlpetko.weatherbot.model.WeatherData;
+import ru.vlpetko.weatherbot.model.WeatherQuery;
 import ru.vlpetko.weatherbot.repository.ClientRepository;
-import ru.vlpetko.weatherbot.repository.CurrentWeatherUnitRepository;
-import ru.vlpetko.weatherbot.service.client.dto.CurrentWeatherUnitDto;
 import ru.vlpetko.weatherbot.service.client.dto.DailyDto;
 import ru.vlpetko.weatherbot.service.client.dto.ForecastDto;
 
@@ -34,55 +34,12 @@ public class OpenMeteoApiClient {
 
     private final RestTemplate restTemplate;
 
-    private final CurrentWeatherUnitRepository currentWeatherUnitRepository;
-
     private final ClientRepository clientRepository;
-
-    @Transactional
-    public CurrentWeather getAndSaveData(){
-        CurrentWeatherUnit currentWeatherUnit = getDataFromOpenSource("latitude=54.99&longitude=73.37",
-                "&current_weather=true");
-        currentWeatherUnitRepository.save(currentWeatherUnit);
-        return currentWeatherUnit.getCurrentWeather();
-    }
-
-    @Transactional
-    public CurrentWeather getAndSaveLocationData(String coordinate){
-        CurrentWeatherUnit currentWeatherUnit = getDataFromOpenSource(coordinate, "&current_weather=true");
-        currentWeatherUnitRepository.save(currentWeatherUnit);
-        return currentWeatherUnit.getCurrentWeather();
-    }
 
     @Transactional
     public List<WeatherData> getAndSaveForecast(double latitude, double longitude, String timeZone, Client client){
         List<WeatherData> weatherDataList = getForecastFromOpenSource(latitude, longitude, timeZone, client);
         return weatherDataList;
-    }
-
-    private CurrentWeatherUnit getDataFromOpenSource(String coordinate, String request){
-
-        CurrentWeatherUnitDto resultJson;
-        CurrentWeatherUnit result = new CurrentWeatherUnit();
-
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<CurrentWeatherUnitDto> responseEntity =
-                restTemplate.exchange(apiLineUrl + coordinate + request, HttpMethod.GET, entity,
-                        CurrentWeatherUnitDto.class);
-
-        log.info("server status: " + responseEntity.getStatusCode());
-        if (responseEntity.getStatusCode() == HttpStatus.valueOf(200)) {
-
-            resultJson = (Objects.requireNonNull(responseEntity.getBody()));
-
-            CurrentWeatherUnit unit = CurrentWeatherUnitMapper.INSTANCE.mapToCurrentWetherUnit(resultJson);
-                CurrentWeather currentWeather = unit.getCurrentWeather();
-                currentWeather.setCurrentWeatherUnit(unit);
-                unit.setCurrentWeather(currentWeather);
-                result = unit;
-        }
-        return result;
     }
 
     @Transactional

@@ -6,12 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import ru.vlpetko.weatherbot.mapper.CurrentWeatherUnitMapper;
-import ru.vlpetko.weatherbot.model.CurrentWeather;
-import ru.vlpetko.weatherbot.model.CurrentWeatherUnit;
 import ru.vlpetko.weatherbot.service.client.dto.*;
 
-import javax.transaction.Transactional;
 import java.util.Objects;
 
 @Service

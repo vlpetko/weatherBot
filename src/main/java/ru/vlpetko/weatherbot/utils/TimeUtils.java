@@ -1,7 +1,6 @@
 package ru.vlpetko.weatherbot.utils;
 
 import org.springframework.stereotype.Service;
-import ru.vlpetko.weatherbot.model.CurrentWeather;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

@@ -1,7 +1,6 @@
 package ru.vlpetko.weatherbot.utils;
 
 import org.springframework.stereotype.Service;
-import ru.vlpetko.weatherbot.model.CurrentWeather;
 import ru.vlpetko.weatherbot.model.WeatherData;
 
 import java.util.List;
@@ -9,10 +8,6 @@ import java.util.List;
 @Service
 public class WeatherUtils {
 
-    public static String convertCurrentWeatherToString(CurrentWeather currentWeather){
-        return "Текущая температура: " + currentWeather.getTemperature() + " Скорость ветра: "
-                + currentWeather.getWindSpeed();
-    }
     public static String convertForecastToString(List<WeatherData> weatherDataList){
         
         StringBuilder stringBuilder = new StringBuilder();
