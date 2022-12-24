@@ -27,3 +27,4 @@ bot-token: ""
 apiLineUrl: "https://api.open-meteo.com/v1/forecast?"
 request: "&daily=temperature_2m_max,temperature_2m_min,windspeed_10m_max,winddirection_10m_dominant&current_weather=true&timezone="
 api-geo-url: "https://api.geoapify.com/v1/geocode/reverse?"
+

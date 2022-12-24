@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - preConditions:
+      - runningAs:
+          username: postgres
+
+  - changeSet:
+      id: 2
+      author: vlpetko
+      changes:
+        - addColumn:
+            tableName: location
+            columns:
+              - column:
+                  name: time_zone
+                  type: varchar(30)

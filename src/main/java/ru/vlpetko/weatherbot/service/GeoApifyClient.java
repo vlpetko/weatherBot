@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import ru.vlpetko.weatherbot.service.client.dto.*;
+import ru.vlpetko.weatherbot.service.client.dto.GeoApiDto;
+import ru.vlpetko.weatherbot.service.client.dto.ResultsDto;
+import ru.vlpetko.weatherbot.service.client.dto.TimeZoneDto;
 
 import java.util.Objects;
 
@@ -23,13 +25,14 @@ public class GeoApifyClient {
 
     private final RestTemplate restTemplate;
 
-    public String getTimeZone(double latitude, double longitude){
-            return getTimeZoneFromOpenSourse("lat=" + latitude + "&lon=" + longitude);
+    public String getTimeZone(double latitude, double longitude) {
+        return getTimeZoneFromOpenSourse("lat=" + latitude + "&lon=" + longitude);
     }
-    private String getTimeZoneFromOpenSourse(String coordinate){
+
+    private String getTimeZoneFromOpenSourse(String coordinate) {
 
         GeoApiDto resultsJson;
-        String timeZone = new String();
+        String timeZone = "";
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> entity = new HttpEntity<>(headers);

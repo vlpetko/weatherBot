@@ -48,7 +48,11 @@ public class OpenMeteoApiClient {
         ForecastDto resultJson;
         List<WeatherData> weatherDataList = new ArrayList<>();
 
-        Location location = Location.builder().latitude(latitude).longitude(longitude).build();
+        Location location = Location.builder()
+                .latitude(latitude)
+                .longitude(longitude)
+                .timeZone(timeZone)
+                .build();
         WeatherQuery weatherQuery = new WeatherQuery();
         weatherQuery.setDate(LocalDateTime.now());
         weatherQuery.setClient(client);
