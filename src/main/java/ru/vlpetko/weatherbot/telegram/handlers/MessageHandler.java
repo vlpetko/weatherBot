@@ -59,9 +59,16 @@ public class MessageHandler {
     }
 
     private SendMessage getForecastMessage(String chatId, double latitude, double longitude, Client client) {
-        List<WeatherData> weatherDataList = openMeteoApiClient.getAndSaveForecast(latitude, longitude,
-                geoApifyClient.getTimeZone(latitude, longitude), client);
-        SendMessage sendMessage = new SendMessage(chatId, convertForecastToString(weatherDataList));
-        return sendMessage;
+        String timeZone = geoApifyClient.getTimeZone(latitude, longitude);
+        if(!timeZone.isBlank()){
+            List<WeatherData> weatherDataList = openMeteoApiClient.getAndSaveForecast(latitude, longitude,
+                    timeZone , client);
+            SendMessage sendMessage = new SendMessage(chatId, convertForecastToString(weatherDataList));
+            return sendMessage;
+        } else {
+            return new SendMessage(chatId,"Не удалось определить ваш часовой пояс, попробуйте позднее сейчас" +
+                    " сервис недоступен");
+        }
+
     }
 }

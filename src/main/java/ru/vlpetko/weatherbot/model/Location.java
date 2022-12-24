@@ -24,6 +24,8 @@ public class Location {
 
     private String position;
 
+    private String timeZone;
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "weather_query_id")
     private WeatherQuery weatherQuery;
