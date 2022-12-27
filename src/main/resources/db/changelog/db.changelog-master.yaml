@@ -3,4 +3,6 @@ databaseChangeLog:
       file: db/changelog/changes/20221221213700_create_all_tables.yaml
   - include:
       file: db/changelog/changes/20221224183700_add_time_zone_to_location.yaml
+  - include:
+      file: db/changelog/changes/20221226152500_add_status_to_weather_query.yaml
 

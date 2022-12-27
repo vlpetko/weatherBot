@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - preConditions:
+      - runningAs:
+          username: postgres
+
+  - changeSet:
+      id: 3
+      author: vlpetko
+      changes:
+        - addColumn:
+            tableName: weather_query
+            columns:
+              - column:
+                  name: query_status
+                  type: varchar(30)

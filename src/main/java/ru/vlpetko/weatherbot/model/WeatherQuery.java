@@ -21,6 +21,8 @@ public class WeatherQuery {
 
     private LocalDateTime date;
 
+    private String queryStatus;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
     private Client client;

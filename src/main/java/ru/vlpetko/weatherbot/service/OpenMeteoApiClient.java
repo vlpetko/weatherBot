@@ -48,16 +48,20 @@ public class OpenMeteoApiClient {
         ForecastDto resultJson;
         List<WeatherData> weatherDataList = new ArrayList<>();
 
-        Location location = Location.builder()
-                .latitude(latitude)
-                .longitude(longitude)
-                .timeZone(timeZone)
-                .build();
-        WeatherQuery weatherQuery = new WeatherQuery();
-        weatherQuery.setDate(LocalDateTime.now());
-        weatherQuery.setClient(client);
-        weatherQuery.setLocation(location);
-        location.setWeatherQuery(weatherQuery);
+        WeatherQuery weatherQuery = client.getWeatherQueries().get(client.getWeatherQueries().size() - 1);
+        Location location = weatherQuery.getLocation();
+        location.setTimeZone(timeZone);
+
+//        Location location = Location.builder()
+//                .latitude(latitude)
+//                .longitude(longitude)
+//                .timeZone(timeZone)
+//                .build();
+//        WeatherQuery weatherQuery = new WeatherQuery();
+//        weatherQuery.setDate(LocalDateTime.now());
+//        weatherQuery.setClient(client);
+//        weatherQuery.setLocation(location);
+//        location.setWeatherQuery(weatherQuery);
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> entity = new HttpEntity<>(headers);
@@ -79,9 +83,11 @@ public class OpenMeteoApiClient {
                 weatherData.setWindSpeed(dailyDto.getWindSpeedMax().get(i));
                 weatherData.setWindDirection(dailyDto.getWindDirectionDomin().get(i));
                 weatherData.setCalendarDate(LocalDate.parse(dailyDto.getTime().get(i)));
+                weatherData.setWeatherQuery(weatherQuery);
                 weatherDataList.add(weatherData);
             }
         weatherQuery.setWeatherDataList(weatherDataList);
+        weatherQuery.setQueryStatus("completed");
         client.getWeatherQueries().add(weatherQuery);
         clientRepository.save(client);
         }
