@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import ru.vlpetko.weatherbot.constants.BotMessageEnum;
+import ru.vlpetko.weatherbot.constants.ButtonNameEnum;
 import ru.vlpetko.weatherbot.model.Client;
 import ru.vlpetko.weatherbot.model.WeatherData;
 import ru.vlpetko.weatherbot.service.ClientService;
@@ -41,12 +42,21 @@ public class MessageHandler {
             if (message.getLocation() == null) {
                 throw new IllegalArgumentException();
             } else {
-                return getForecastMessage(chatId, message.getLocation().getLatitude(),message.getLocation().getLongitude(), client);
+
+                client = clientService.setQueryAndLocation(client, message.getLocation().getLatitude(),
+                        message.getLocation().getLongitude());
+                return getMainMenuMessage(chatId);
             }
         } else if (inputText.equals("/start")) {
             return getStartMessage(chatId);
+        } else if (inputText.equals(ButtonNameEnum.GET_FORECAST_BUTTON.getButtonName())) {
+            return getForecastMessage(client, client.getWeatherQueries().get(client.getWeatherQueries().size() - 1)
+                    .getLocation().getLatitude(),client.getWeatherQueries().get(client.getWeatherQueries().size() - 1)
+                    .getLocation().getLongitude());
+        } else if (inputText.equals(ButtonNameEnum.GET_CURRENT_WEATHER_BUTTON.getButtonName())) {
+            return getCurrentWeatherMessage(chatId);
         } else {
-            System.out.println("Fucking text");
+            System.out.println("Unknoun text in message");
         }
         return null;
     }
@@ -54,21 +64,35 @@ public class MessageHandler {
     private SendMessage getStartMessage(String chatId) {
         SendMessage sendMessage = new SendMessage(chatId, BotMessageEnum.HELP_MESSAGE.getMessage());
         sendMessage.enableMarkdown(true);
+        sendMessage.setReplyMarkup(replyKeyboardMaker.getLocationKeyboard());
+        return sendMessage;
+    }
+
+    private SendMessage getMainMenuMessage(String chatId){
+        SendMessage sendMessage = new SendMessage(chatId, BotMessageEnum.MAIN_MENU_MESSAGE.getMessage());
+        sendMessage.enableMarkdown(true);
         sendMessage.setReplyMarkup(replyKeyboardMaker.getMainMenuKeyboard());
         return sendMessage;
     }
 
-    private SendMessage getForecastMessage(String chatId, double latitude, double longitude, Client client) {
+    private SendMessage getForecastMessage(Client clientWithQuery, double latitude, double longitude) {
         String timeZone = geoApifyClient.getTimeZone(latitude, longitude);
         if(!timeZone.isBlank()){
             List<WeatherData> weatherDataList = openMeteoApiClient.getAndSaveForecast(latitude, longitude,
-                    timeZone , client);
-            SendMessage sendMessage = new SendMessage(chatId, convertForecastToString(weatherDataList));
+                    timeZone , clientWithQuery);
+            SendMessage sendMessage = new SendMessage(clientWithQuery.getUserId().toString(),
+                    convertForecastToString(weatherDataList));
+            sendMessage.enableMarkdown(true);
+            sendMessage.setReplyMarkup(replyKeyboardMaker.getLocationKeyboard());
             return sendMessage;
         } else {
-            return new SendMessage(chatId,"Не удалось определить ваш часовой пояс, попробуйте позднее сейчас" +
-                    " сервис недоступен");
+            return new SendMessage(clientWithQuery.getUserId().toString(),"Не удалось определить ваш часовой пояс," +
+                    " попробуйте позднее, сейчас сервис недоступен");
         }
 
+    }
+
+    private SendMessage getCurrentWeatherMessage(String chatId){
+        return null;
     }
 }

@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.vlpetko.weatherbot.model.Client;
+import ru.vlpetko.weatherbot.model.Location;
+import ru.vlpetko.weatherbot.model.WeatherQuery;
 import ru.vlpetko.weatherbot.repository.ClientRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -32,5 +35,21 @@ public class ClientService {
         } else {
             return clientOptional.get();
         }
+    }
+    public Client setQueryAndLocation(Client client, double latitude, double longitude){
+
+        Location location = Location.builder()
+                .latitude(latitude)
+                .longitude(longitude)
+                .build();
+        WeatherQuery weatherQuery = new WeatherQuery();
+        weatherQuery.setDate(LocalDateTime.now());
+        weatherQuery.setClient(client);
+        weatherQuery.setLocation(location);
+        weatherQuery.setQueryStatus("processing");
+        location.setWeatherQuery(weatherQuery);
+        client.getWeatherQueries().add(weatherQuery);
+        clientRepository.save(client);
+        return client;
     }
 }

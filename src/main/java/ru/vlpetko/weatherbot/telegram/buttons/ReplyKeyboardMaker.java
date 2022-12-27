@@ -16,12 +16,30 @@ public class ReplyKeyboardMaker {
         KeyboardRow row1 = new KeyboardRow();
 
         KeyboardButton keyboardButton = new KeyboardButton(ButtonNameEnum.GET_FORECAST_BUTTON.getButtonName());
-        keyboardButton.setRequestLocation(true);
         KeyboardButton keyboardButton1 = new KeyboardButton(ButtonNameEnum.GET_CURRENT_WEATHER_BUTTON.getButtonName());
-        keyboardButton1.setRequestLocation(true);
 
         row1.add(keyboardButton);
         row1.add(keyboardButton1);
+
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        keyboard.add(row1);
+
+        final ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        replyKeyboardMarkup.setKeyboard(keyboard);
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(false);
+
+        return replyKeyboardMarkup;
+    }
+
+    public ReplyKeyboardMarkup getLocationKeyboard(){
+        KeyboardRow row1 = new KeyboardRow();
+
+        KeyboardButton keyboardButton = new KeyboardButton(ButtonNameEnum.GET_LOCATION_BUTTON.getButtonName());
+        keyboardButton.setRequestLocation(true);
+
+        row1.add(keyboardButton);
 
         List<KeyboardRow> keyboard = new ArrayList<>();
         keyboard.add(row1);
