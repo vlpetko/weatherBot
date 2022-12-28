@@ -18,6 +18,7 @@ import ru.vlpetko.weatherbot.telegram.buttons.ReplyKeyboardMaker;
 import java.io.IOException;
 import java.util.List;
 
+import static ru.vlpetko.weatherbot.utils.WeatherUtils.convertCurrentWeatherToString;
 import static ru.vlpetko.weatherbot.utils.WeatherUtils.convertForecastToString;
 
 @Component
@@ -54,7 +55,9 @@ public class MessageHandler {
                     .getLocation().getLatitude(),client.getWeatherQueries().get(client.getWeatherQueries().size() - 1)
                     .getLocation().getLongitude());
         } else if (inputText.equals(ButtonNameEnum.GET_CURRENT_WEATHER_BUTTON.getButtonName())) {
-            return getCurrentWeatherMessage(chatId);
+            return getCurrentWeatherMessage(client, client.getWeatherQueries().get(client.getWeatherQueries().size() - 1)
+                    .getLocation().getLatitude(),client.getWeatherQueries().get(client.getWeatherQueries().size() - 1)
+                    .getLocation().getLongitude());
         } else {
             System.out.println("Unknoun text in message");
         }
@@ -92,7 +95,19 @@ public class MessageHandler {
 
     }
 
-    private SendMessage getCurrentWeatherMessage(String chatId){
-        return null;
+    private SendMessage getCurrentWeatherMessage(Client clientWithQuery, double latitude, double longitude){
+        String timeZone = geoApifyClient.getTimeZone(latitude, longitude);
+        if(!timeZone.isBlank()) {
+            List<WeatherData> weatherDataList = openMeteoApiClient.getAndSaveCurrentWeather(latitude, longitude,
+                    timeZone, clientWithQuery);
+            SendMessage sendMessage = new SendMessage(clientWithQuery.getUserId().toString(),
+                    convertCurrentWeatherToString(weatherDataList));
+            sendMessage.enableMarkdown(true);
+            sendMessage.setReplyMarkup(replyKeyboardMaker.getLocationKeyboard());
+            return sendMessage;
+        } else {
+            return new SendMessage(clientWithQuery.getUserId().toString(),"Не удалось определить ваш часовой пояс," +
+                    " попробуйте позднее, сейчас сервис недоступен");
+        }
     }
 }

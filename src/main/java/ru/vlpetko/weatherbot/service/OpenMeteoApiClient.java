@@ -6,17 +6,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import ru.vlpetko.weatherbot.mapper.CurrentWeatherMapper;
 import ru.vlpetko.weatherbot.model.Client;
 import ru.vlpetko.weatherbot.model.Location;
 import ru.vlpetko.weatherbot.model.WeatherData;
 import ru.vlpetko.weatherbot.model.WeatherQuery;
 import ru.vlpetko.weatherbot.repository.ClientRepository;
+import ru.vlpetko.weatherbot.service.client.dto.CurrentWeatherDto;
 import ru.vlpetko.weatherbot.service.client.dto.DailyDto;
 import ru.vlpetko.weatherbot.service.client.dto.ForecastDto;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -36,11 +37,15 @@ public class OpenMeteoApiClient {
 
     private final ClientRepository clientRepository;
 
-    @Transactional
     public List<WeatherData> getAndSaveForecast(double latitude, double longitude, String timeZone, Client client){
         List<WeatherData> weatherDataList = getForecastFromOpenSource(latitude, longitude, timeZone, client);
         return weatherDataList;
     }
+    public List<WeatherData> getAndSaveCurrentWeather(double latitude, double longitude, String timeZone, Client client){
+        List<WeatherData> weatherDataList = getCurrentWeatherFromOpenSource(latitude, longitude, timeZone, client);
+        return weatherDataList;
+    }
+
 
     @Transactional
     public List<WeatherData> getForecastFromOpenSource(double latitude, double longitude, String timeZone, Client client){
@@ -51,17 +56,6 @@ public class OpenMeteoApiClient {
         WeatherQuery weatherQuery = client.getWeatherQueries().get(client.getWeatherQueries().size() - 1);
         Location location = weatherQuery.getLocation();
         location.setTimeZone(timeZone);
-
-//        Location location = Location.builder()
-//                .latitude(latitude)
-//                .longitude(longitude)
-//                .timeZone(timeZone)
-//                .build();
-//        WeatherQuery weatherQuery = new WeatherQuery();
-//        weatherQuery.setDate(LocalDateTime.now());
-//        weatherQuery.setClient(client);
-//        weatherQuery.setLocation(location);
-//        location.setWeatherQuery(weatherQuery);
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> entity = new HttpEntity<>(headers);
@@ -91,6 +85,39 @@ public class OpenMeteoApiClient {
         client.getWeatherQueries().add(weatherQuery);
         clientRepository.save(client);
         }
+        return weatherDataList;
+    }
+
+    @Transactional
+    public List<WeatherData> getCurrentWeatherFromOpenSource(double latitude, double longitude, String timeZone, Client client){
+        String coordinate = "latitude=" + latitude + "&longitude=" + longitude;
+        ForecastDto resultJson;
+        List<WeatherData> weatherDataList = new ArrayList<>();
+
+        WeatherQuery weatherQuery = client.getWeatherQueries().get(client.getWeatherQueries().size() - 1);
+        Location location = weatherQuery.getLocation();
+        location.setTimeZone(timeZone);
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<ForecastDto> responseEntity =
+                restTemplate.exchange(apiLineUrl + coordinate + request + timeZone, HttpMethod.GET, entity,
+                        ForecastDto.class);
+
+        log.info("server status: " + responseEntity.getStatusCode());
+        if (responseEntity.getStatusCode() == HttpStatus.valueOf(200)) {
+
+            resultJson = (Objects.requireNonNull(responseEntity.getBody()));
+
+            CurrentWeatherDto currentWeatherDto = resultJson.getCurrentWeatherDto();
+            WeatherData weatherData = CurrentWeatherMapper.INSTANCE.mapToWeatherData(currentWeatherDto);
+            weatherDataList.add(weatherData);
+        }
+        weatherQuery.setWeatherDataList(weatherDataList);
+        weatherQuery.setQueryStatus("completed");
+        client.getWeatherQueries().add(weatherQuery);
+        clientRepository.save(client);
         return weatherDataList;
     }
 }
