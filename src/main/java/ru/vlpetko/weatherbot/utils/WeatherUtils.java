@@ -16,12 +16,20 @@ public class WeatherUtils {
 
         for (WeatherData weatherData : weatherDataList) {
             String weather = weatherData.getCalendarDate() + " - \uD83C\uDF21 Температура от " + weatherData.getMinTemp() +
-                    " до " + weatherData.getMaxTemp() + " градусов, \uD83C\uDF2C ветер " + getWindDirection(weatherData.getWindDirection()) +
-                    ", до " + weatherData.getWindSpeed() + " м/с;\n";
+                    " до " + weatherData.getMaxTemp() + " градусов, \uD83C\uDF2C ветер " +
+                    getWindDirection(weatherData.getWindDirection()) + ", до " + weatherData.getWindSpeed() +
+                    " м/с;\n";
             stringBuilder.append(weather);
         }
         
         return "Прогноз погоды на:\n\n" + stringBuilder.toString();
+    }
+    public static String convertCurrentWeatherToString(List<WeatherData> weatherDataList){
+
+        WeatherData weatherData = weatherDataList.get(0);
+
+        return "\uD83C\uDF21 Температура сейчас: " + weatherData.getCurrentTemp() + " градусов.\n Ветер " +
+                getWindDirection(weatherData.getWindDirection()) + ", " + weatherData.getWindSpeed() + " м/с;";
     }
 
     private static String getWindDirection(double windDirection){
