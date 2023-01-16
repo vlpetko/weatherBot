@@ -19,6 +19,9 @@ spring:
     username: ${DB_LOGIN:postgres}
     password: ${DB_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 api-url: "https://api.telegram.org/"
 webhook-path: "https://36e2-92-124-163-11.eu.ngrok.io"
@@ -27,4 +30,5 @@ bot-token: ""
 apiLineUrl: "https://api.open-meteo.com/v1/forecast?"
 request: "&daily=temperature_2m_max,temperature_2m_min,windspeed_10m_max,winddirection_10m_dominant&current_weather=true&timezone="
 api-geo-url: "https://api.geoapify.com/v1/geocode/reverse?"
+
 

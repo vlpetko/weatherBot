@@ -45,6 +45,10 @@ public class OpenMeteoApiClient {
         List<WeatherData> weatherDataList = getCurrentWeatherFromOpenSource(latitude, longitude, timeZone, client);
         return weatherDataList;
     }
+    public WeatherData getCurrentWeatherToController(double latitude, double longitude, String timeZone, Client client){
+        List<WeatherData> weatherDataList = getCurrentWeatherFromOpenSource(latitude, longitude, timeZone, client);
+        return weatherDataList.get(0);
+    }
 
 
     @Transactional
@@ -112,6 +116,7 @@ public class OpenMeteoApiClient {
 
             CurrentWeatherDto currentWeatherDto = resultJson.getCurrentWeatherDto();
             WeatherData weatherData = CurrentWeatherMapper.INSTANCE.mapToWeatherData(currentWeatherDto);
+            weatherData.setWeatherQuery(weatherQuery);
             weatherDataList.add(weatherData);
         }
         weatherQuery.setWeatherDataList(weatherDataList);
