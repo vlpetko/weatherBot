@@ -3,12 +3,14 @@ package ru.vlpetko.weatherbot.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
 import ru.vlpetko.weatherbot.telegram.WeatherBot;
 import ru.vlpetko.weatherbot.telegram.handlers.CallbackQueryHandler;
 import ru.vlpetko.weatherbot.telegram.handlers.MessageHandler;
 
 @Configuration
+@EnableScheduling
 public class SpringConfig {
 
     @Value("${webhook-path}")

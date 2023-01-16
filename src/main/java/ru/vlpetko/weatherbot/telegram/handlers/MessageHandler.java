@@ -2,6 +2,7 @@ package ru.vlpetko.weatherbot.telegram.handlers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -17,6 +18,7 @@ import ru.vlpetko.weatherbot.telegram.buttons.ReplyKeyboardMaker;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import static ru.vlpetko.weatherbot.utils.WeatherUtils.convertCurrentWeatherToString;
 import static ru.vlpetko.weatherbot.utils.WeatherUtils.convertForecastToString;
