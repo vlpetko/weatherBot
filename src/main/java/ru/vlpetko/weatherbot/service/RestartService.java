@@ -26,7 +26,6 @@ public class RestartService {
 
     private final ReplyKeyboardMaker replyKeyboardMaker;
 
-
     public void setRestartKeyBoard(String chatId) {
 
         try {

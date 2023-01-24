@@ -38,8 +38,10 @@ public class ReplyKeyboardMaker {
 
         KeyboardButton keyboardButton = new KeyboardButton(ButtonNameEnum.GET_LOCATION_BUTTON.getButtonName());
         keyboardButton.setRequestLocation(true);
+        KeyboardButton keyboardButton1 = new KeyboardButton(ButtonNameEnum.GET_CITY_BUTTON.getButtonName());
 
         row1.add(keyboardButton);
+        row1.add(keyboardButton1);
 
         List<KeyboardRow> keyboard = new ArrayList<>();
         keyboard.add(row1);

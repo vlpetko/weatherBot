@@ -8,6 +8,7 @@ import java.time.ZoneId;
 
 @Service
 public class TimeUtils {
+
     public static LocalDateTime convertLongToLocalDateTime(long registrateDate){
         return LocalDateTime.ofInstant(Instant.ofEpochSecond(registrateDate), ZoneId.systemDefault());
     }

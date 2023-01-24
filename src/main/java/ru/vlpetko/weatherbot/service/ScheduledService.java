@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import ru.vlpetko.weatherbot.model.City;
 import ru.vlpetko.weatherbot.model.WeatherQuery;
+import ru.vlpetko.weatherbot.repository.CityRepository;
 import ru.vlpetko.weatherbot.repository.WeatherQueryRepository;
 
 import javax.transaction.Transactional;
@@ -21,11 +23,13 @@ public class ScheduledService {
 
     private final WeatherQueryRepository weatherQueryRepository;
 
+    private final CityRepository cityRepository;
+
     @Transactional
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 */10 * * * *")
     public void getTimeEndRequests(){
 
-        LocalDateTime localDateTime = LocalDateTime.now().minusMinutes(1l);
+        LocalDateTime localDateTime = LocalDateTime.now().minusMinutes(10l);
 
         List<WeatherQuery> weatherQueryList =
                 weatherQueryRepository.getWeatherQueriesByQueryStatusEquals("processing");
@@ -38,5 +42,11 @@ public class ScheduledService {
                 weatherQueryRepository.save(weatherQuery);
             }
         }
+    }
+
+    public City getCity(){
+        City city = cityRepository.getByAlternateNamesContaining("Омск").get(0);
+        System.out.println(city);
+        return city;
     }
 }
