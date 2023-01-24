@@ -8,6 +8,8 @@ public enum ButtonNameEnum {
 
     GET_LOCATION_BUTTON("Передать геолокацию"),
 
+    GET_CITY_BUTTON("Указать свой город"),
+
     HELP_BUTTON("Помощь");
 
     private final String buttonName;
