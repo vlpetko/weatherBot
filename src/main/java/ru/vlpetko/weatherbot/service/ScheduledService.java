@@ -27,15 +27,15 @@ public class ScheduledService {
 
     @Transactional
     @Scheduled(cron = "0 */10 * * * *")
-    public void getTimeEndRequests(){
+    public void getTimeEndRequests() {
 
         LocalDateTime localDateTime = LocalDateTime.now().minusMinutes(10l);
 
         List<WeatherQuery> weatherQueryList =
                 weatherQueryRepository.getWeatherQueriesByQueryStatusEquals("processing");
 
-        for (WeatherQuery weatherQuery: weatherQueryList) {
-            if (weatherQuery.getDate().isBefore(ChronoLocalDateTime.from(localDateTime))){
+        for (WeatherQuery weatherQuery : weatherQueryList) {
+            if (weatherQuery.getDate().isBefore(ChronoLocalDateTime.from(localDateTime))) {
                 String chatId = weatherQuery.getClient().getUserId().toString();
                 restartService.setRestartKeyBoard(chatId);
                 weatherQuery.setQueryStatus("completed");
@@ -44,7 +44,7 @@ public class ScheduledService {
         }
     }
 
-    public City getCity(){
+    public City getCity() {
         City city = cityRepository.getByAlternateNamesContaining("Омск").get(0);
         System.out.println(city);
         return city;

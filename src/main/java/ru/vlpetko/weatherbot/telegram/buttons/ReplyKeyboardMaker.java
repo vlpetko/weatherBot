@@ -33,7 +33,7 @@ public class ReplyKeyboardMaker {
         return replyKeyboardMarkup;
     }
 
-    public ReplyKeyboardMarkup getLocationKeyboard(){
+    public ReplyKeyboardMarkup getLocationKeyboard() {
         KeyboardRow row1 = new KeyboardRow();
 
         KeyboardButton keyboardButton = new KeyboardButton(ButtonNameEnum.GET_LOCATION_BUTTON.getButtonName());

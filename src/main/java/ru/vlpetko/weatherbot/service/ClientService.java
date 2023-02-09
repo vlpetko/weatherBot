@@ -19,11 +19,11 @@ import static ru.vlpetko.weatherbot.utils.TimeUtils.convertLongToLocalDateTime;
 @Slf4j
 public class ClientService {
 
-   private final ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
 
-    public Client chekClient(Long userId, String firstName, String lastName, long registrateDate){
+    public Client chekClient(Long userId, String firstName, String lastName, long registrateDate) {
         Optional<Client> clientOptional = Optional.ofNullable(clientRepository.getClientByUserId(userId));
-        if(clientOptional.isEmpty()){
+        if (clientOptional.isEmpty()) {
             Client client = new Client();
             client.setUserId(userId);
             client.setFirstName(firstName);
@@ -36,7 +36,8 @@ public class ClientService {
             return clientOptional.get();
         }
     }
-    public Client setQueryAndLocation(Client client, double latitude, double longitude){
+
+    public Client setQueryAndLocation(Client client, double latitude, double longitude) {
 
         Location location = Location.builder()
                 .latitude(latitude)
@@ -52,7 +53,8 @@ public class ClientService {
         clientRepository.save(client);
         return client;
     }
-    public Client getClient(Long id){
+
+    public Client getClient(Long id) {
         return clientRepository.getClientByUserId(id);
     }
 }

@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.vlpetko.weatherbot.model.Location;
 
 @Repository
-public interface LocationRepository extends JpaRepository<Location,Long> {
+public interface LocationRepository extends JpaRepository<Location, Long> {
 }

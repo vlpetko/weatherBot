@@ -8,7 +8,6 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import ru.vlpetko.weatherbot.constants.BotMessageEnum;
 import ru.vlpetko.weatherbot.model.City;
 import ru.vlpetko.weatherbot.model.Client;
-import ru.vlpetko.weatherbot.repository.ClientRepository;
 import ru.vlpetko.weatherbot.service.CityService;
 import ru.vlpetko.weatherbot.service.ClientService;
 import ru.vlpetko.weatherbot.telegram.buttons.ReplyKeyboardMaker;
@@ -29,7 +28,7 @@ public class CallbackQueryHandler {
         String data = buttonQuery.getData();
         Client client = clientService.getClient(buttonQuery.getMessage().getChatId());
 
-        if (!data.isBlank()){
+        if (!data.isBlank()) {
             City city = cityService.getCityById(Long.valueOf(data));
             client = clientService.setQueryAndLocation(client, city.getLatitude(), city.getLongitude());
             return getMainMenuMessage(chatId);
@@ -38,6 +37,7 @@ public class CallbackQueryHandler {
         }
 
     }
+
     private SendMessage getMainMenuMessage(String chatId) {
         SendMessage sendMessage = new SendMessage(chatId, BotMessageEnum.MAIN_MENU_MESSAGE.getMessage());
         sendMessage.enableMarkdown(true);

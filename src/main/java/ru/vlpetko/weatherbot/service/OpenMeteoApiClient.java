@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import ru.vlpetko.weatherbot.controller.dto.WeatherRequestDto;
 import ru.vlpetko.weatherbot.mapper.CurrentWeatherMapper;
 import ru.vlpetko.weatherbot.model.Client;
 import ru.vlpetko.weatherbot.model.Location;
@@ -37,22 +38,27 @@ public class OpenMeteoApiClient {
 
     private final ClientRepository clientRepository;
 
-    public List<WeatherData> getAndSaveForecast(double latitude, double longitude, String timeZone, Client client){
+
+    public List<WeatherData> getAndSaveForecast(double latitude, double longitude, String timeZone, Client client) {
         List<WeatherData> weatherDataList = getForecastFromOpenSource(latitude, longitude, timeZone, client);
         return weatherDataList;
     }
-    public List<WeatherData> getAndSaveCurrentWeather(double latitude, double longitude, String timeZone, Client client){
+
+    public List<WeatherData> getAndSaveCurrentWeather(double latitude, double longitude, String timeZone, Client client) {
         List<WeatherData> weatherDataList = getCurrentWeatherFromOpenSource(latitude, longitude, timeZone, client);
         return weatherDataList;
     }
-    public WeatherData getCurrentWeatherToController(double latitude, double longitude, String timeZone, Client client){
-        List<WeatherData> weatherDataList = getCurrentWeatherFromOpenSource(latitude, longitude, timeZone, client);
+
+    public WeatherData getCurrentWeatherToController(WeatherRequestDto weatherRequestDto) {
+        List<WeatherData> weatherDataList = getCurrentWeatherFromOpenSource(weatherRequestDto.getLatitude(),
+                weatherRequestDto.getLongitude(), weatherRequestDto.getTimeZone(),
+                clientRepository.getById(weatherRequestDto.getId()));
         return weatherDataList.get(0);
     }
 
 
     @Transactional
-    public List<WeatherData> getForecastFromOpenSource(double latitude, double longitude, String timeZone, Client client){
+    public List<WeatherData> getForecastFromOpenSource(double latitude, double longitude, String timeZone, Client client) {
         String coordinate = "latitude=" + latitude + "&longitude=" + longitude;
         ForecastDto resultJson;
         List<WeatherData> weatherDataList = new ArrayList<>();
@@ -84,16 +90,16 @@ public class OpenMeteoApiClient {
                 weatherData.setWeatherQuery(weatherQuery);
                 weatherDataList.add(weatherData);
             }
-        weatherQuery.setWeatherDataList(weatherDataList);
-        weatherQuery.setQueryStatus("completed");
-        client.getWeatherQueries().add(weatherQuery);
-        clientRepository.save(client);
+            weatherQuery.setWeatherDataList(weatherDataList);
+            weatherQuery.setQueryStatus("completed");
+            client.getWeatherQueries().add(weatherQuery);
+            clientRepository.save(client);
         }
         return weatherDataList;
     }
 
     @Transactional
-    public List<WeatherData> getCurrentWeatherFromOpenSource(double latitude, double longitude, String timeZone, Client client){
+    public List<WeatherData> getCurrentWeatherFromOpenSource(double latitude, double longitude, String timeZone, Client client) {
         String coordinate = "latitude=" + latitude + "&longitude=" + longitude;
         ForecastDto resultJson;
         List<WeatherData> weatherDataList = new ArrayList<>();

@@ -9,10 +9,10 @@ import java.util.List;
 @Service
 public class CityUtils {
 
-    public static List<City> checkCityNames(List<City> cityList, String inputText){
+    public static List<City> checkCityNames(List<City> cityList, String inputText) {
         List<City> checkedCities = new ArrayList<>();
-        for (City city: cityList) {
-            if (city.getName().equals(inputText)){
+        for (City city : cityList) {
+            if (city.getName().equals(inputText)) {
                 checkedCities.add(city);
             }
         }

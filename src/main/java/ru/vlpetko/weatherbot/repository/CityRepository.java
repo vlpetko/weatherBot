@@ -9,7 +9,7 @@ import ru.vlpetko.weatherbot.model.City;
 import java.util.List;
 
 @Repository
-public interface CityRepository extends JpaRepository<City,Long> {
+public interface CityRepository extends JpaRepository<City, Long> {
 
     @Query("SELECT c FROM City c WHERE c.alternateNames LIKE %:alternateNames%")
     List<City> getByAlternateNamesContaining(@Param("alternateNames") String alternateNames);

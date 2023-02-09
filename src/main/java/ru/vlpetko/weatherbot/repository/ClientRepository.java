@@ -9,7 +9,7 @@ import ru.vlpetko.weatherbot.model.Client;
 import java.util.Optional;
 
 @Repository
-public interface ClientRepository extends JpaRepository<Client,Long> {
+public interface ClientRepository extends JpaRepository<Client, Long> {
 
     @Query("SELECT c FROM Client c WHERE c.userId = : userId")
     Optional<Client> getOptionalByUserId(@Param("userId") Long userId);
