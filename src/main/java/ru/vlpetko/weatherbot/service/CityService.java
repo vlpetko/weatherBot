@@ -15,15 +15,16 @@ public class CityService {
 
     private final CityRepository cityRepository;
 
-    public List<City> getCity(String cityName){
-        if (Character.isUpperCase(cityName.charAt(0))){
+    public List<City> getCity(String cityName) {
+        if (Character.isUpperCase(cityName.charAt(0))) {
             return cityRepository.getByAlternateNamesContaining(cityName);
         } else {
-            String cityToUpperCase = cityName.substring(0,1).toUpperCase() + cityName.substring(1);
+            String cityToUpperCase = cityName.substring(0, 1).toUpperCase() + cityName.substring(1);
             return cityRepository.getByAlternateNamesContaining(cityToUpperCase);
         }
     }
-    public City getCityById(Long id){
+
+    public City getCityById(Long id) {
         return cityRepository.getById(id);
     }
 }

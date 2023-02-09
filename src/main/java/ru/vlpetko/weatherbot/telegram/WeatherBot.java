@@ -28,7 +28,7 @@ public class WeatherBot extends SpringWebhookBot {
     CallbackQueryHandler callbackQueryHandler;
 
     public WeatherBot(SetWebhook setWebhook, MessageHandler messageHandler,
-                    CallbackQueryHandler callbackQueryHandler) {
+                      CallbackQueryHandler callbackQueryHandler) {
         super(setWebhook);
         this.messageHandler = messageHandler;
         this.callbackQueryHandler = callbackQueryHandler;

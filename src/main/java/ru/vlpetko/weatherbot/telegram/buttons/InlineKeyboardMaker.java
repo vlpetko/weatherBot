@@ -15,7 +15,7 @@ public class InlineKeyboardMaker {
 
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
 
-        for (City city: cityList) {
+        for (City city : cityList) {
             rowList.add(getButton(city.getName() + ", часовой пояс - " + city.getTimezone(), city.getId().toString()));
         }
 
