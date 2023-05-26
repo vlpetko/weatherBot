@@ -58,7 +58,9 @@ public class OpenMeteoApiClient {
         return weatherDataList.get(0);
     }
 
-
+    /**
+     * Метод реализует генерацию прогноза погоды
+     */
     private List<WeatherData> getForecastFromOpenSource(double latitude, double longitude, String timeZone, Client client) {
         String coordinate = "latitude=" + latitude + "&longitude=" + longitude;
         ForecastDto resultJson;
@@ -99,6 +101,9 @@ public class OpenMeteoApiClient {
         return weatherDataList;
     }
 
+    /**
+     * Метод реализует генерацию отчета о текущей погоде
+     */
     private List<WeatherData> getCurrentWeatherFromOpenSource(double latitude, double longitude, String timeZone, Client client) {
         String coordinate = "latitude=" + latitude + "&longitude=" + longitude;
         ForecastDto resultJson;
