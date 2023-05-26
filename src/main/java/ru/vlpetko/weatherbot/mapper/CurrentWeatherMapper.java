@@ -2,6 +2,7 @@ package ru.vlpetko.weatherbot.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 import ru.vlpetko.weatherbot.controller.dto.CurrentReportDto;
 import ru.vlpetko.weatherbot.model.WeatherData;
@@ -21,6 +22,7 @@ public interface CurrentWeatherMapper {
 
     CurrentReportDto mapToCurrentReportDto(WeatherData weatherData);
 
+    @Named("convertToLocalDate")
     default LocalDate convertToLocalDate(LocalDateTime localDateTime){
         return localDateTime.toLocalDate();
     }

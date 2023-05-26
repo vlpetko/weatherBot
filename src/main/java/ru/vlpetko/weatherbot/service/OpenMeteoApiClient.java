@@ -38,17 +38,19 @@ public class OpenMeteoApiClient {
 
     private final ClientRepository clientRepository;
 
-
+    @Transactional
     public List<WeatherData> getAndSaveForecast(double latitude, double longitude, String timeZone, Client client) {
         List<WeatherData> weatherDataList = getForecastFromOpenSource(latitude, longitude, timeZone, client);
         return weatherDataList;
     }
 
+    @Transactional
     public List<WeatherData> getAndSaveCurrentWeather(double latitude, double longitude, String timeZone, Client client) {
         List<WeatherData> weatherDataList = getCurrentWeatherFromOpenSource(latitude, longitude, timeZone, client);
         return weatherDataList;
     }
 
+    @Transactional
     public WeatherData getCurrentWeatherToController(WeatherRequestDto weatherRequestDto) {
         List<WeatherData> weatherDataList = getCurrentWeatherFromOpenSource(weatherRequestDto.getLatitude(),
                 weatherRequestDto.getLongitude(), weatherRequestDto.getTimeZone(),
@@ -56,9 +58,10 @@ public class OpenMeteoApiClient {
         return weatherDataList.get(0);
     }
 
-
-    @Transactional
-    public List<WeatherData> getForecastFromOpenSource(double latitude, double longitude, String timeZone, Client client) {
+    /**
+     * Метод реализует генерацию прогноза погоды
+     */
+    private List<WeatherData> getForecastFromOpenSource(double latitude, double longitude, String timeZone, Client client) {
         String coordinate = "latitude=" + latitude + "&longitude=" + longitude;
         ForecastDto resultJson;
         List<WeatherData> weatherDataList = new ArrayList<>();
@@ -98,8 +101,10 @@ public class OpenMeteoApiClient {
         return weatherDataList;
     }
 
-    @Transactional
-    public List<WeatherData> getCurrentWeatherFromOpenSource(double latitude, double longitude, String timeZone, Client client) {
+    /**
+     * Метод реализует генерацию отчета о текущей погоде
+     */
+    private List<WeatherData> getCurrentWeatherFromOpenSource(double latitude, double longitude, String timeZone, Client client) {
         String coordinate = "latitude=" + latitude + "&longitude=" + longitude;
         ForecastDto resultJson;
         List<WeatherData> weatherDataList = new ArrayList<>();

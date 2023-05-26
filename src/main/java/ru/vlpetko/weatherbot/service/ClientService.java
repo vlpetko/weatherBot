@@ -21,6 +21,9 @@ public class ClientService {
 
     private final ClientRepository clientRepository;
 
+    /**
+     * Метод реализует проверку клиента в базе данных
+     */
     public Client chekClient(Long userId, String firstName, String lastName, long registrateDate) {
         Optional<Client> clientOptional = Optional.ofNullable(clientRepository.getClientByUserId(userId));
         if (clientOptional.isEmpty()) {

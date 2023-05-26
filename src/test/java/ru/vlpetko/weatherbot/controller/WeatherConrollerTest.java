@@ -22,8 +22,7 @@ import java.util.ArrayList;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("Класс WeatherConroller")
 @WebMvcTest(WeatherConroller.class)
@@ -88,8 +87,7 @@ class WeatherConrollerTest {
 
         mockMvc.perform(post("/api/weather/current").contentType(APPLICATION_JSON)
                 .content(expectedBody))
-                .andExpect(status().isOk());
-//                .andExpect(content().json(expextedData));
-
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("currentTemp").value(24.0));
     }
 }
